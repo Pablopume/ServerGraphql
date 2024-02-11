@@ -1,6 +1,6 @@
 package com.example.servergraphql.data.modelo;
 
-import com.example.servergraphql.domain.modelo.Tienda;
+
 import jakarta.persistence.*;
 
 import java.util.List;
