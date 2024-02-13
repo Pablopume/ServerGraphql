@@ -52,7 +52,6 @@ private final Configuration config;
             FileInputStream fis = new FileInputStream(config.getUserkeystore());
             ks.load(fis, keystorePassword);
             fis.close();
-
             X509Certificate userCertificate = (X509Certificate) ks.getCertificate("server");
           return   userCertificate.getPublicKey();
 

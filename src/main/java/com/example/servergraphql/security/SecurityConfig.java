@@ -1,4 +1,4 @@
-package com.example.servergraphql.ui.config;
+package com.example.servergraphql.security;
 
 
 import com.example.servergraphql.security.JwtTokenFilter;
