@@ -19,9 +19,7 @@ public class TiendaService {
 
     public List<Tienda> getTiendas() {
 
-        List<Tienda> tiendas= tiendaRepository.findAll().stream().map(tiendaMapper::toTienda).toList();
-    tiendas.get(0);
-   return tiendas;
+        return tiendaRepository.findAll().stream().map(tiendaMapper::toTienda).toList();
     }
 
     public Tienda addTienda(TiendaInput tiendaInput) {
