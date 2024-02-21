@@ -1,4 +1,7 @@
 package com.example.servergraphql.data.modelo.graphql;
 
-public record UpdateVentaInput(Long id, String fecha, double total) {
+import java.time.LocalDate;
+
+public record UpdateVentaInput(Long id, LocalDate fecha, double total, Long clienteId, Long empleadoId) {
+
 }

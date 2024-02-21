@@ -1,0 +1,68 @@
+###login
+GET http://localhost:8764/login?user=Pium&password=123
+Accept: application/json
+Content-Type: application/json
+
+
+
+> {%
+    client.global.set("token", response.body.accessToken);
+%}
+
+###get all clientes
+GRAPHQL {{host}}
+Authorization: Bearer {{token}}
+
+query GetCliente {
+    getClientes {
+        id
+        nombre
+        email
+    }
+}
+
+###get all empleados
+GRAPHQL {{host}}
+Authorization: Bearer {{token}}
+
+query GetEmpleadosByIdTienda($id: ID!) {
+    getEmpleadosByIdTienda(id: $id) {
+        id
+        nombre
+        apellido
+        cargo
+    }
+}
+
+{
+      "id": 1
+}
+
+
+###delete cliente
+GRAPHQL {{host}}
+Authorization: Bearer {{token}}
+
+mutation DeleteCliente($id: ID!) {
+    deleteCliente(id: $id)
+}
+{
+    "id": 1
+}
+
+
+
+###update venta
+GRAPHQL {{host}}
+Authorization: Bearer {{token}}
+
+mutation UpdateVenta($updateVentaInput: UpdateVentaInput!) {
+    updateVenta(updateVentaInput: $updateVentaInput)
+}
+{
+    "updateVentaInput": {
+        "id": 1,
+        "fecha": "2021-10-10",
+        "total": 1000
+    }
+}

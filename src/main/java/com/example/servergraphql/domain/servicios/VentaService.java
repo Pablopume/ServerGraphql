@@ -15,13 +15,14 @@ import java.util.List;
 public class VentaService {
     private final VentaRepository ventaRepository;
     private final VentaEntityMapper ventaMapper;
+    private final UpdateMapperService updateMapperService;
 
     public List<Venta> getVentas() {
         return ventaRepository.findAll().stream().map(ventaMapper::toVenta).toList();
     }
 
     public Boolean upddateVenta(UpdateVentaInput ventaInput) {
-        ventaRepository.save(ventaMapper.toEntity(ventaInput));
+        ventaRepository.save(updateMapperService.toVentaEntity(ventaInput));
         return true;
     }
 }
