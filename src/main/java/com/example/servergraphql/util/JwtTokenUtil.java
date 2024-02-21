@@ -20,7 +20,6 @@ public class JwtTokenUtil {
 private final Configuration config;
 
     public boolean validate(String token) {
-        try {
             Jws<Claims> claimsJws = Jwts.parserBuilder()
                     .setSigningKey(getPublicKey())
                     .build()
@@ -29,9 +28,6 @@ private final Configuration config;
             long expirationMillis = claimsJws.getBody().getExpiration().getTime();
             return System.currentTimeMillis() < expirationMillis;
 
-        } catch (ExpiredJwtException e) {
-            throw new ValidationException("Token expirado");
-        }
     }
 
     public String getUsername(String token) {
@@ -53,7 +49,7 @@ private final Configuration config;
             ks.load(fis, keystorePassword);
             fis.close();
             X509Certificate userCertificate = (X509Certificate) ks.getCertificate("server");
-          return   userCertificate.getPublicKey();
+          return userCertificate.getPublicKey();
 
 
         } catch (Exception ex) {

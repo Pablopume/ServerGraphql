@@ -1,12 +1,13 @@
 package com.example.servergraphql.data.modelo;
-
-import com.example.servergraphql.domain.modelo.Cliente;
-import com.example.servergraphql.domain.modelo.Empleado;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
 @Entity
+@Getter
+@Setter
 public class VentaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,4 +23,5 @@ public class VentaEntity {
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     ClienteEntity cliente;
+
 }
