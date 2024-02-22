@@ -7,10 +7,6 @@ import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 
 @Configuration
 public class GraphqlConfig {
-
-
-
-
         @Bean
         public RuntimeWiringConfigurer runtimeWiringConfigurer() {
             return wiringBuilder -> wiringBuilder
@@ -18,10 +14,5 @@ public class GraphqlConfig {
                     .scalar(ExtendedScalars.DateTime)
                     .scalar(ExtendedScalars.GraphQLBigDecimal)
                     .scalar(LocalDateAdapter.LOCAL_DATE);
-
         }
-
-
-
-
 }

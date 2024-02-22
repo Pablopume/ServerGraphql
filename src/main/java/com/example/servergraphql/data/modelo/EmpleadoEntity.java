@@ -2,13 +2,13 @@ package com.example.servergraphql.data.modelo;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class EmpleadoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

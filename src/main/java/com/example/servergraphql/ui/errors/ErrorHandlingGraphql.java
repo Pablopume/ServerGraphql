@@ -1,14 +1,14 @@
 package com.example.servergraphql.ui.errors;
 
-import com.example.servergraphql.domain.modelo.exceptions.Exception401;
-import com.example.servergraphql.domain.modelo.exceptions.ExceptionLogin;
+
+import com.example.servergraphql.domain.modelo.exceptions.NoEncontradoException;
+import com.example.servergraphql.domain.modelo.exceptions.PrecioMuyAltoExpcetion;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import graphql.schema.DataFetchingEnvironment;
-import jakarta.validation.ValidationException;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.graphql.execution.DataFetcherExceptionResolverAdapter;
 import org.springframework.graphql.execution.ErrorType;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 
 import java.security.cert.CertificateException;
@@ -17,14 +17,14 @@ import java.security.cert.CertificateException;
 public class ErrorHandlingGraphql extends DataFetcherExceptionResolverAdapter {
     @Override
     public GraphQLError resolveToSingleError(Throwable ex, DataFetchingEnvironment env) {
-        if (ex instanceof Exception401) {
+        if (ex instanceof AccessDeniedException) {
             return GraphqlErrorBuilder.newError()
                     .errorType(ErrorType.BAD_REQUEST)
-                    .message(ex.getMessage())
+                    .message("Acceso denegado")
                     .path(env.getExecutionStepInfo().getPath())
                     .location(env.getField().getSourceLocation())
                     .build();
-        } else if (ex instanceof ExceptionLogin) {
+        } else if (ex instanceof NoEncontradoException) {
             return GraphqlErrorBuilder.newError()
                     .errorType(ErrorType.NOT_FOUND)
                     .message(ex.getMessage())
@@ -38,7 +38,16 @@ public class ErrorHandlingGraphql extends DataFetcherExceptionResolverAdapter {
                     .path(env.getExecutionStepInfo().getPath())
                     .location(env.getField().getSourceLocation())
                     .build();
-        } else {
+        }
+            else if (ex instanceof PrecioMuyAltoExpcetion) {
+                return GraphqlErrorBuilder.newError()
+                        .errorType(ErrorType.INTERNAL_ERROR)
+                        .message(ex.getMessage())
+                        .path(env.getExecutionStepInfo().getPath())
+                        .location(env.getField().getSourceLocation())
+                        .build();
+            }
+        else {
             return null;
         }
     }

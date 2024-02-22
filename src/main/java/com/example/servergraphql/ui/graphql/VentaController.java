@@ -28,4 +28,10 @@ public class VentaController {
     public boolean updateVenta(@Argument UpdateVentaInput updateVentaInput) {
         return ventaService.upddateVenta(updateVentaInput);
     }
+
+    @QueryMapping
+    @Secured("ROLE_ADMIN")
+    public Venta getVentaById(@Argument Long id) {
+        return ventaService.getVentaById(id);
+    }
 }

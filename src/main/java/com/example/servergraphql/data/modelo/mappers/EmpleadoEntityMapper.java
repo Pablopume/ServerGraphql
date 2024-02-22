@@ -9,6 +9,5 @@ import org.mapstruct.Mapper;
 public interface EmpleadoEntityMapper {
     Empleado toEmpleado(EmpleadoEntity empleadoEntity);
 
-    EmpleadoEntity toEmpleadoEntity(Empleado empleado);
-    EmpleadoEntity toEmpleadoEntity(EmpleadoInput empleado);
+
 }

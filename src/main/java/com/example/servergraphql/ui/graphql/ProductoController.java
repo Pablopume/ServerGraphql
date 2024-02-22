@@ -1,7 +1,10 @@
 package com.example.servergraphql.ui.graphql;
 
-import com.example.servergraphql.domain.modelo.Cliente;
-import com.example.servergraphql.domain.servicios.ClienteService;
+import com.example.servergraphql.data.modelo.graphql.EmpleadoInput;
+import com.example.servergraphql.domain.modelo.Empleado;
+import com.example.servergraphql.domain.modelo.Producto;
+import com.example.servergraphql.domain.servicios.EmpleadoService;
+import com.example.servergraphql.domain.servicios.ProductoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -13,18 +16,12 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class ClienteController {
-    private final ClienteService clienteService;
-
+public class ProductoController {
+    private final ProductoService productoService;
     @QueryMapping
     @Secured("ROLE_ADMIN")
-    public List<Cliente> getClientes() {
-        return clienteService.getClientes();
+    public List<Producto> getProductos() {
+        return productoService.getProductos();
     }
 
-    @MutationMapping
-    @Secured("ROLE_ADMIN")
-    public boolean deleteCliente(@Argument Long id) {
-        return clienteService.deleteCliente(id);
-    }
 }

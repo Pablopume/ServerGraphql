@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 
@@ -17,7 +18,15 @@ import java.security.cert.X509Certificate;
 @RequiredArgsConstructor
 public class JwtTokenUtil {
 
-private final Configuration config;
+
+
+    @Value("${application.password}")
+    private String password;
+
+
+
+    @Value("${application.keystore}")
+    private String keystore;
 
     public boolean validate(String token) {
             Jws<Claims> claimsJws = Jwts.parserBuilder()
@@ -43,9 +52,9 @@ private final Configuration config;
     private PublicKey getPublicKey() {
         try {
 
-            char[] keystorePassword = config.getPassword().toCharArray();
+            char[] keystorePassword = password.toCharArray();
             KeyStore ks = KeyStore.getInstance("PKCS12");
-            FileInputStream fis = new FileInputStream(config.getUserkeystore());
+            FileInputStream fis = new FileInputStream(keystore);
             ks.load(fis, keystorePassword);
             fis.close();
             X509Certificate userCertificate = (X509Certificate) ks.getCertificate("server");

@@ -1,4 +1,4 @@
 package com.example.servergraphql.data.modelo.graphql;
 
-public record EmpleadoInput(Long id, String nombre, String apellido, String cargo) {
+public record EmpleadoInput(String nombre, String apellido, String cargo, Long tiendaId) {
 }

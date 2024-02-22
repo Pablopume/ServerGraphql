@@ -3,11 +3,30 @@ GET http://localhost:8764/login?user=Pium&password=123
 Accept: application/json
 Content-Type: application/json
 
-
-
 > {%
     client.global.set("token", response.body.accessToken);
+    client.global.set("refresh", response.body.refreshToken);
 %}
+
+###refresh token
+GET http://localhost:8764/refreshToken?refreshToken={{refresh}}
+Accept: application/json
+Content-Type: application/json
+
+> {%
+    client.global.set("token", response.body.accessToken);;
+%}
+
+###register
+POST http://localhost:8764/credentials
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "Prueba",
+"password": "123"
+}
+
 
 ###get all clientes
 GRAPHQL {{host}}
@@ -38,6 +57,29 @@ query GetEmpleadosByIdTienda($id: ID!) {
       "id": 1
 }
 
+###get all productos
+GRAPHQL {{host}}
+Authorization: Bearer {{token}}
+
+query GetProductos {
+    getProductos {
+        id
+        nombre
+        precio
+    }
+}
+
+###Get all ventas
+GRAPHQL {{host}}
+Authorization: Bearer {{token}}
+
+query GetVentas {
+    getVentas {
+        id
+        fecha
+        total
+    }
+}
 
 ###delete cliente
 GRAPHQL {{host}}
@@ -47,7 +89,7 @@ mutation DeleteCliente($id: ID!) {
     deleteCliente(id: $id)
 }
 {
-    "id": 1
+    "id": 1000
 }
 
 
@@ -60,9 +102,44 @@ mutation UpdateVenta($updateVentaInput: UpdateVentaInput!) {
     updateVenta(updateVentaInput: $updateVentaInput)
 }
 {
-    "updateVentaInput": {
-        "id": 1,
-        "fecha": "2021-10-10",
-        "total": 1000
+  "updateVentaInput": {
+    "id": 8,
+    "fecha": "2021-10-10",
+    "total": 1200,
+    "clienteId": 2,
+    "empleadoId": 1
+  }
+}
+
+###add empleado
+GRAPHQL {{host}}
+Authorization: Bearer {{token}}
+
+mutation AddEmpleado($empleadoInput: EmpleadoInput!) {
+    addEmpleado(empleadoInput: $empleadoInput)
+}
+{
+  "empleadoInput": {
+    "apellido": "Novillo",
+    "nombre": "Oscar",
+    "cargo": "El Aprobador",
+    "tiendaId": 1
+  }
+}
+
+###get venta by id
+GRAPHQL {{host}}
+Authorization: Bearer {{token}}
+
+query GetVentaById($id: ID!) {
+    getVentaById(id: $id) {
+        id
+        fecha
+        total
+        clienteId
+        empleadoId
     }
+}
+{
+    "id": 1
 }

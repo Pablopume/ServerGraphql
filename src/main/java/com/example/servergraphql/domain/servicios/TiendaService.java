@@ -6,6 +6,7 @@ import com.example.servergraphql.data.modelo.graphql.UpdateTiendaInput;
 import com.example.servergraphql.data.modelo.mappers.TiendaEntityMapper;
 import com.example.servergraphql.data.repositories.TiendaRepository;
 import com.example.servergraphql.domain.modelo.Tienda;
+import com.example.servergraphql.domain.modelo.exceptions.NoEncontradoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,12 @@ public class TiendaService {
 
     public List<Tienda> getTiendas() {
 
-        return tiendaRepository.findAll().stream().map(tiendaMapper::toTienda).toList();
+        List<Tienda> tiendas= tiendaRepository.findAll().stream().map(tiendaMapper::toTienda).toList();
+        if (tiendas.isEmpty()) {
+            throw new NoEncontradoException("No hay tiendas");
+        } else {
+            return tiendas;
+        }
     }
 
     public Tienda addTienda(TiendaInput tiendaInput) {

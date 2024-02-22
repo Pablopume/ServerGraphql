@@ -1,10 +1,10 @@
 package com.example.servergraphql.domain.servicios;
 
-import com.example.servergraphql.data.modelo.VentaEntity;
 import com.example.servergraphql.data.modelo.graphql.UpdateVentaInput;
-import com.example.servergraphql.data.modelo.mappers.VentaEntityMapper;
 import com.example.servergraphql.data.repositories.VentaRepository;
 import com.example.servergraphql.domain.modelo.Venta;
+import com.example.servergraphql.domain.modelo.exceptions.NoEncontradoException;
+import com.example.servergraphql.domain.modelo.exceptions.PrecioMuyAltoExpcetion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,15 +14,30 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VentaService {
     private final VentaRepository ventaRepository;
-    private final VentaEntityMapper ventaMapper;
-    private final UpdateMapperService updateMapperService;
+
+    private final MapperService mapperService;
 
     public List<Venta> getVentas() {
-        return ventaRepository.findAll().stream().map(ventaMapper::toVenta).toList();
+
+        List<Venta>ventas= ventaRepository.findAll().stream().map(mapperService::toVenta).toList();
+        if (ventas.isEmpty()) {
+            throw new NoEncontradoException("No hay ventas");
+        } else {
+            return ventas;
+        }
     }
 
     public Boolean upddateVenta(UpdateVentaInput ventaInput) {
-        ventaRepository.save(updateMapperService.toVentaEntity(ventaInput));
-        return true;
+        if (ventaInput.total()>1000000){
+            throw new PrecioMuyAltoExpcetion("No se puede realizar la venta, el precio es muy alto");
+        }else {
+            ventaRepository.save(mapperService.toVentaEntity(ventaInput));
+            return true;
+        }
+
+    }
+
+    public Venta getVentaById(Long id) {
+        return mapperService.toVenta(ventaRepository.findById(id).orElseThrow());
     }
 }

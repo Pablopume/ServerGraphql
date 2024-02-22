@@ -19,7 +19,7 @@ public class TiendaController {
     private final TiendaService tiendaService;
 
     @QueryMapping
-    @Secured("ROLE_ADMIN")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public List<Tienda> getTiendas() {
         return tiendaService.getTiendas();
     }
